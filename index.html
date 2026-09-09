@@ -133,6 +133,14 @@ input.err,textarea.err{border-color:#C0392B;box-shadow:0 0 0 3px rgba(192,57,43,
 .btn-ghost:hover{border-color:var(--action);color:var(--action)}
 .btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--action-soft)}
 .foot{font-size:12px;color:var(--text-3);text-align:center;line-height:1.5;margin-top:16px;padding:0 8px}
+.btn-send{background:var(--action);color:#fff;border-color:var(--action)}
+.btn-send:hover{background:var(--action-hover)}
+.btn[disabled]{opacity:.6;cursor:default}
+.done{margin-top:22px;text-align:center;padding:46px 26px}
+.done-check{width:58px;height:58px;border-radius:9999px;background:var(--success-bg);color:var(--success);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:700;margin:0 auto 18px}
+.done h2{font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;margin:0 0 10px;color:var(--text)}
+.done p{font-size:15px;color:var(--text-2);line-height:1.55;margin:0 auto;max-width:46ch}
+.done .done-intl{margin-top:14px;color:var(--brand);font-weight:500}
 
 /* toast */
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--primitive-dark-800);color:var(--primitive-cream-200);padding:12px 20px;border-radius:9999px;font-size:14px;font-weight:600;box-shadow:var(--shadow-high);opacity:0;pointer-events:none;transition:.25s;z-index:50;display:flex;align-items:center;gap:9px}
@@ -274,23 +282,26 @@ input.err,textarea.err{border-color:#C0392B;box-shadow:0 0 0 3px rgba(192,57,43,
         </div>
         <div class="note">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
-          <span data-i18n="note">Ao enviar, <b>anexe também fotos legíveis do passaporte e do visto</b> na mesma mensagem de WhatsApp ou e-mail.</span>
+          <span data-i18n="note">Para viagens internacionais, você também precisará enviar <b>fotos legíveis do passaporte e do visto</b> à secretaria da Aurea (WhatsApp ou e-mail).</span>
         </div>
       </div>
     </section>
 
     <div class="actions">
-      <button type="button" class="btn btn-primary" id="wa">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2Zm5.8 14.06c-.24.68-1.4 1.3-1.94 1.34-.5.05-1.13.24-3.66-.77-3.08-1.24-5.05-4.4-5.2-4.6-.15-.2-1.25-1.66-1.25-3.17 0-1.51.79-2.25 1.07-2.56.28-.31.61-.38.82-.38.2 0 .41 0 .59.01.19.01.44-.07.69.53.24.6.83 2.06.9 2.21.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.35 1.46.29.15.46.12.63-.07.17-.2.72-.84.91-1.13.19-.29.39-.24.65-.15.27.1 1.7.8 1.99.95.29.15.48.22.55.34.07.12.07.68-.17 1.36Z"/></svg>
-        <span data-i18n="btn_wa">Enviar por WhatsApp</span>
-      </button>
-      <button type="button" class="btn btn-mail" id="mail">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 6 10 7L22 6"/></svg>
-        <span data-i18n="btn_mail">Enviar por e-mail</span>
+      <button type="button" class="btn btn-send" id="send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
+        <span data-i18n="btn_send">Enviar</span>
       </button>
       <p class="foot" data-i18n="foot">Dados enviados diretamente para Iza, secretária da Aurea, usados somente para a emissão de passagens. Seus dados são protegidos por lei, conforme a LGPD (Lei nº 13.709/2018).</p>
     </div>
   </form>
+
+  <div class="card done" id="done" hidden>
+    <div class="done-check">✓</div>
+    <h2 data-i18n="done_title">Recebido!</h2>
+    <p data-i18n="done_msg">Seus dados foram enviados para a secretaria da Aurea. Obrigada!</p>
+    <p class="done-intl" id="doneIntl" hidden data-i18n="done_intl">Como é uma viagem internacional, envie também as fotos legíveis do passaporte e do visto à secretaria da Aurea (WhatsApp ou e-mail).</p>
+  </div>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite">
@@ -307,8 +318,8 @@ const I18N={
     s3:"Programas de fidelidade",opcional:"opcional",fid_lbl:"Programa(s) e número",fid_ph:"Ex.: Latam Pass, AAdvantage, Air Canada (nº 1234 5678 90)",fid_desc:"Possui algum programa de fidelidade? Se sim, informe no campo abaixo. Se não, pode deixar em branco.",
     s4:"Viagem internacional",intl_q:"Esta emissão inclui trecho internacional?",nao:"Não",sim:"Sim",
     pass:"Número do passaporte",passval:"Validade do passaporte",passpais:"País emissor do passaporte",visto:"Visto — país, tipo e validade",visto_h:"(se aplicável)",visto_ph:"Ex.: EUA — B1/B2, válido até 03/2030",
-    note:"Ao enviar, <b>anexe também fotos legíveis do passaporte e do visto</b> na mesma mensagem de WhatsApp ou e-mail.",
-    btn_wa:"Enviar por WhatsApp",btn_mail:"Enviar por e-mail",btn_copy:"Copiar os dados",
+    note:"Para viagens internacionais, você também precisará enviar <b>fotos legíveis do passaporte e do visto</b> à secretaria da Aurea (WhatsApp ou e-mail).",
+    btn_send:"Enviar",sending:"Enviando…",done_title:"Recebido!",done_msg:"Seus dados foram enviados para a secretaria da Aurea. Obrigada!",done_intl:"Como é uma viagem internacional, envie também as fotos legíveis do passaporte e do visto à secretaria da Aurea (WhatsApp ou e-mail).",senderr:"Não foi possível enviar agora. Verifique a conexão e tente de novo.",
     foot:"Dados enviados diretamente para Iza, secretária da Aurea, usados somente para a emissão de passagens. Seus dados são protegidos por lei, conforme a LGPD (Lei nº 13.709/2018).",
     msg_req:"Campo obrigatório",msg_cpf:"Informe um CPF válido",msg_req2:"Campo obrigatório",msg_req3:"Campo obrigatório",
     subj:"Dados para emissão de passagem",title_msg:"DADOS PARA EMISSÃO DE PASSAGEM",copied:"Dados copiados",need:"Preencha os campos obrigatórios",
@@ -320,8 +331,8 @@ const I18N={
     s3:"Frequent-flyer programs",opcional:"optional",fid_lbl:"Program(s) and number",fid_ph:"e.g. Latam Pass, AAdvantage, Air Canada (no. 1234 5678 90)",fid_desc:"Do you have any frequent-flyer programs? If so, enter it in the field below. If not, you can leave this blank.",
     s4:"International travel",intl_q:"Does this booking include an international leg?",nao:"No",sim:"Yes",
     pass:"Passport number",passval:"Passport expiry",passpais:"Passport issuing country",visto:"Visa — country, type & validity",visto_h:"(if applicable)",visto_ph:"e.g. USA — B1/B2, valid until 03/2030",
-    note:"When you send, <b>also attach clear photos of the passport and visa</b> in the same WhatsApp or email message.",
-    btn_wa:"Send via WhatsApp",btn_mail:"Send via email",btn_copy:"Copy details",
+    note:"For international travel, you will also need to send <b>clear photos of the passport and visa</b> to Aurea's office (WhatsApp or email).",
+    btn_send:"Submit",sending:"Sending…",done_title:"Received!",done_msg:"Your details have been sent to Aurea's office. Thank you!",done_intl:"Since this is an international trip, please also send clear photos of the passport and visa to Aurea's office (WhatsApp or email).",senderr:"Couldn't send right now. Check your connection and try again.",
     foot:"Details sent directly to Iza, Aurea's secretary, used only to issue tickets. Your data is protected by law under Brazil's LGPD (Law No. 13.709/2018).",
     msg_req:"Required field",msg_cpf:"Enter a valid CPF",msg_req2:"Required field",msg_req3:"Required field",
     subj:"Traveler details for ticket issuance",title_msg:"TRAVELER DETAILS FOR TICKET ISSUANCE",copied:"Details copied",need:"Please complete the required fields",
@@ -400,14 +411,25 @@ function summary(){
   if(intl){
     if(lang==="pt"){add(L.pass,val("pass_pt"));add(L.passval,fmtDate(val("passval_pt")));add(L.passpais,val("passpais_pt"));}
     add(L.visto,val("visto"));
-    o+=nl+L.attach+nl;
   }
   return o.trim();
 }
 
-/* actions */
-$("#wa").onclick=()=>{if(!validate())return;window.open("https://wa.me/?text="+encodeURIComponent(summary()),"_blank");};
-$("#mail").onclick=()=>{if(!validate())return;const d=I18N[lang];const n=val("nome");location.href=`mailto:${MAIL}?subject=${encodeURIComponent(d.subj+(n?" — "+n:""))}&body=${encodeURIComponent(summary())}`;};
+/* actions — envio automático via Apps Script */
+const ENDPOINT="https://script.google.com/macros/s/AKfycbz1TMRjluOFjyEcL0YC-_xDuuJBlhkpdAtHxNM_ns1EnIsoiVnR2F-aLEThQIAKekCNwQ/exec"; /* URL do Web App do Apps Script (termina em /exec) */
+function setSending(on){const b=$("#send");b.disabled=on;b.querySelector("span").textContent=on?I18N[lang].sending:I18N[lang].btn_send;}
+function showDone(){$("#f").hidden=true;$("#done").hidden=false;$("#doneIntl").hidden=!isIntl();window.scrollTo({top:0,behavior:"smooth"});}
+$("#send").onclick=async()=>{
+  if(!validate())return;
+  const d=I18N[lang], n=val("nome");
+  if(!ENDPOINT||ENDPOINT.indexOf("__")===0){toast(d.senderr);return;}
+  const payload={subject:d.subj+(n?" — "+n:""),body:summary(),lang:lang};
+  setSending(true);
+  try{
+    await fetch(ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)});
+    showDone();
+  }catch(e){setSending(false);toast(d.senderr);}
+};
 
 let tt;
 function toast(m){const el=$("#toast");$("#toastTxt").textContent=m;el.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>el.classList.remove("show"),2600);}
